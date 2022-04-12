@@ -14,7 +14,7 @@ app = Flask(__name__)
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 
-def load_tokenizer_and_model(model="microsoft/DialoGPT-large"):
+def load_tokenizer_and_model(model="microsoft/DialoGPT-small"):
     tokenizer = AutoTokenizer.from_pretrained(model)
     model = AutoModelForCausalLM.from_pretrained(model)
     return tokenizer, model
