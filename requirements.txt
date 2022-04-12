@@ -3,4 +3,3 @@ transformers
 gunicorn
 numpy
 flask
-Pillow
