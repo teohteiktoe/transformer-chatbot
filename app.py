@@ -14,11 +14,16 @@ app = Flask(__name__)
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 
+
+
 def load_tokenizer_and_model(model="microsoft/DialoGPT-small"):
     tokenizer = AutoTokenizer.from_pretrained(model)
     model = AutoModelForCausalLM.from_pretrained(model)
     return tokenizer, model
-        
+
+
+tokenizer, model = load_tokenizer_and_model()
+
 def generate_response(tokenizer, model, chat_round, chat_history_ids, text):
     new_input_ids = tokenizer.encode(text + tokenizer.eos_token, return_tensors='pt')
     bot_input_ids = torch.cat([chat_history_ids, new_input_ids], dim=-1) if chat_round > 0 else new_input_ids
@@ -30,7 +35,6 @@ def generate_response(tokenizer, model, chat_round, chat_history_ids, text):
 def index():
     if request.method=="POST":
         text = str(request.form.get("text"))
-        tokenizer, model = load_tokenizer_and_model()
         chat_history_ids = None
         for chat_round in range(1):
             chat_history_ids, r = generate_response(tokenizer, model, chat_round, chat_history_ids, text)
