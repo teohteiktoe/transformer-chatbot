@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
-import torch
+#import torch
 
 model_name="microsoft/DialoGPT-small"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
