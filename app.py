@@ -24,7 +24,7 @@ def load_tokenizer_and_model(model="microsoft/DialoGPT-small"):
 
 tokenizer, model = load_tokenizer_and_model()
 
-def generate_response(tokenizer, model, chat_round, chat_history_ids, text):
+def generate_response(chat_round, chat_history_ids, text):
     new_input_ids = tokenizer.encode(text + tokenizer.eos_token, return_tensors='pt')
     bot_input_ids = torch.cat([chat_history_ids, new_input_ids], dim=-1) if chat_round > 0 else new_input_ids
     chat_history_ids = model.generate(bot_input_ids, max_length=100, pad_token_id=tokenizer.eos_token_id)
@@ -37,7 +37,7 @@ def index():
         text = str(request.form.get("text"))
         chat_history_ids = None
         for chat_round in range(1):
-            chat_history_ids, r = generate_response(tokenizer, model, chat_round, chat_history_ids, text)
+            chat_history_ids, r = generate_response(chat_round, chat_history_ids, text)
         return(render_template("index.html", result = r))
     else:
         return(render_template("index.html", result = "Waiting..."))
