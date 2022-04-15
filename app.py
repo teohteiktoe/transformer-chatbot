@@ -18,10 +18,6 @@ model_name="microsoft/DialoGPT-small"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
 
-
-
-tokenizer, model = load_tokenizer_and_model()
-
 def generate_response(chat_round, chat_history_ids, text):
     new_input_ids = tokenizer.encode(text + tokenizer.eos_token, return_tensors='pt')
     bot_input_ids = torch.cat([chat_history_ids, new_input_ids], dim=-1) if chat_round > 0 else new_input_ids
